@@ -3,7 +3,6 @@ import os
 import requests
 import json
 import random
-from replit import db
 import google.generativeai as palm
 import io
 from PyPDF2 import PdfReader
