@@ -7,7 +7,7 @@ import google.generativeai as palm
 import io
 from PyPDF2 import PdfReader
 from docx import Document
-
+from keep_alive import keep_alive
 
 token = os.environ['TOKEN']
 intents = discord.Intents.default()
@@ -142,5 +142,5 @@ async def on_message(message):
 
    # Handle file uploads for summarization
    
-
+keep_alive()
 client.run(token)
