@@ -37,9 +37,7 @@ def get_completion(prompt):
 def summarize_text(text):
   prompt = f"""
   Your task is to summarize the following text. Keep the summary concise and capture the key points:
-  
-{text}
-
+  ```{text}```
   """
   return get_completion(prompt)
 
@@ -50,7 +48,7 @@ def read_pdf_to_chunks(file, chunk_size=2000):
   for page in pdf_document:
       text += page.get_text()
 
-  # Split the text into chunks of up to chunk_size characters
+  # Split the text into chunks of up to `chunk_size` characters
   return [text[i:i+chunk_size] for i in range(0, len(text), chunk_size)]
 
 
@@ -85,9 +83,7 @@ async def on_message(message):
         your job is to explain the code Snippet Step-by-Step.
         Also, compute the final output of the code.
         code snippet is shared below, delimited with triple backticks:
-         
-{code_snippet}
-
+         ```{code_snippet}```
         Finally, provide a summary that clearly states the main logic or purpose of the code.
         """
         result=get_completion(prompt)
@@ -133,9 +129,7 @@ async def on_message(message):
     #   await message.channel.send("Text has been successfully extracted for summarization.")
     #   prompt = f"""
     #   Your task is to summarize the following text. Keep the summary concise and capture the key points:
-    #   
-{text_to_summarize}
-
+    #   ```{text_to_summarize}```
     #   """
     #   result = get_completion(prompt)
     #   if len(result) > 2000:
@@ -149,3 +143,4 @@ async def on_message(message):
    
 
 client.run(token)
+
