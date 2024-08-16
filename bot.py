@@ -92,25 +92,28 @@ async def on_message(message):
       
     if message.content.lower().startswith('$code'):
         code_snippet = message.content[len('$code'):].strip()
-        await message.channel.send("Code has been successfully extracted.")
-        #await message.channel.send(f"Extracted code: {code_snippet}")
-        prompt=f"""
-        Your task is to act as a Python code Explainer.
-        I'll give you aa code snippet.
-        your job is to explain the code Snippet Step-by-Step.
-        Also, compute the final output of the code.
-        code snippet is shared below, delimited with triple backticks:
-         ```{code_snippet}```
-        Finally, provide a summary that clearly states the main logic or purpose of the code.
-        """
-        result=get_completion(prompt)
-       #await message.channel.send(result)
-        if len(result) > 2000:
-          with open("output.txt", "w") as file:
-              file.write(result)
-          await message.channel.send(file=discord.File("output.txt"))
+        if len(code_snippet) == 0:
+            await message.channel.send("Enter $code followed by your code")
         else:
-          await message.channel.send(result)
+            await message.channel.send("Code has been successfully extracted.")
+            #await message.channel.send(f"Extracted code: {code_snippet}")
+            prompt=f"""
+            Your task is to act as a Python code Explainer.
+            I'll give you aa code snippet.
+            your job is to explain the code Snippet Step-by-Step.
+            Also, compute the final output of the code.
+            code snippet is shared below, delimited with triple backticks:
+             ```{code_snippet}```
+            Finally, provide a summary that clearly states the main logic or purpose of the code.
+            """
+            result=get_completion(prompt)
+           #await message.channel.send(result)
+            if len(result) > 2000:
+              with open("output.txt", "w") as file:
+                  file.write(result)
+              await message.channel.send(file=discord.File("output.txt"))
+            else:
+              await message.channel.send(result)
 
     if message.content.lower().startswith('$summarize') and message.attachments:
          attachment = message.attachments[0]
@@ -141,23 +144,6 @@ async def on_message(message):
              await message.channel.send(file=discord.File("summary_output.txt"))
          else:
              await message.channel.send(combined_summary)
-               
-    # if message.content.startswith('$summarize'):
-    #   text_to_summarize = message.content[len('$summarize'):].strip()
-    #   await message.channel.send("Text has been successfully extracted for summarization.")
-    #   prompt = f"""
-    #   Your task is to summarize the following text. Keep the summary concise and capture the key points:
-    #   ```{text_to_summarize}```
-    #   """
-    #   result = get_completion(prompt)
-    #   if len(result) > 2000:
-    #       with open("summary_output.txt", "w") as file:
-    #           file.write(result)
-    #       await message.channel.send(file=discord.File("summary_output.txt"))
-    #   else:
-    #       await message.channel.send(result)
-
-   # Handle file uploads for summarization
-   
+                  
 keep_alive()
 client.run(token)
